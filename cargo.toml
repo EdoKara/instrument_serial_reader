@@ -1,0 +1,5 @@
+[dependencies]
+serial = "0.4"
+xml-rs = "0.8.14"
+polars = "0.30.0"
+plotters = "0.3.3"
