@@ -1,0 +1,6 @@
+[build]
+xargo = false
+
+[build.env]
+volumes = ["nvme0n1p7","nvme0n1p8"]
+
