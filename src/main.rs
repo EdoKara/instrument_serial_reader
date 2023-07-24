@@ -12,14 +12,16 @@ fn main() {
 
     while true {
     //below func gets system time.
-    let time_startloop:u64 = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap()
+    let time_startloop:u64 = SystemTime::now()
+    .duration_since(SystemTime::UNIX_EPOCH).unwrap()
     .as_secs();
 
     let mut timing_flags: [i32; 3] = [0,0,0];
     
     //second while loop for the interior stuff
     while timing_flags != [1,1,1] {
-        let time_now:u64 = SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap()
+        let time_now:u64 = SystemTime::now()
+        .duration_since(SystemTime::UNIX_EPOCH).unwrap()
         .as_secs();
 
         if time_now - time_startloop == 0 {
