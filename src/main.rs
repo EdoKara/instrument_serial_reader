@@ -4,17 +4,20 @@ use std::io::{Write};
 
 
 fn main() {
-    let builder = serialport::new("/dev/ttyACM0", 9600) //params to tune for the Arduino port
-        .timeout(Duration::from_millis(3500))
+    let builder = serialport::new("COM5", 9600) //params to tune for the Arduino port
+        .timeout(Duration::from_millis(3000))
         .data_bits(DataBits::Eight)
         .stop_bits(StopBits::One);
+        // .flow_control(serialport::FlowControl::Hardware);
         println!("Waiting for next 5-minute interval...");
 
-        setup(60*5); //starts it on the next 5mins. Accounts for the time it takes for
+        setup(10); //starts it on the next 5mins. Accounts for the time it takes for
         // the port to reset as well.
 
     let mut port = builder.open().expect("failed to connect.");
-    thread::sleep(Duration::from_millis(3000)); //need to wait 3s for the Arduino port to 
+
+        
+    thread::sleep(Duration::from_millis(2500)); //need to wait 3s for the Arduino port to 
     //reset and communicate. When it's opened here, it will stay open for the lifetime of the
     //variable "port", which is as long as the loop continues to run. 
 
@@ -26,12 +29,12 @@ fn main() {
         .as_secs();
 
     let mut timing_flags: [i32; 3] = [0,0,0]; //flagging var to check when all 3 levels are cycled thru
-    let routime:u64 = 60*5; //var to define the run time in 1 place
-    let max_buffer:u64 = 2; //maximum error acccepted before a condition is considered skipped
+    let routime:u64 = 20; //var to define the run time in 1 place
+    let max_buffer:u64 = 5; //maximum error acccepted before a condition is considered skipped
     
     //second while loop for the interior stuff
     while timing_flags != [1,1,1] { //iterate any time the flags aren't all set
-    
+
         let time_now:u64 = SystemTime::now()
             .duration_since(SystemTime::UNIX_EPOCH)
             .unwrap()
