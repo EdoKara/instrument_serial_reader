@@ -1,10 +1,8 @@
 name: release
-on: [push]
+on:[release]
 
 jobs:
   build:
-    runs-on: windows-latest
-  steps:  
   - name: Rust Release binary
   # You may pin to the exact commit or the version.
   # uses: rust-build/rust-build.action@7d5b0c135ddb825f7692d4d2d75e598184d15cec
