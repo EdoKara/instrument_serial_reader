@@ -36,7 +36,6 @@ dependencies = [
 name = "ard_serial_comm"
 version = "0.1.0"
 dependencies = [
- "libudev-sys",
  "serialport",
  "time",
 ]
