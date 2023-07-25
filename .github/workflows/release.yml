@@ -1,0 +1,12 @@
+name: release
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+  steps:
+  - name: Rust Toolchain
+    uses: actions-rs/toolchain@v1
+    
+  
+    
