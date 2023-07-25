@@ -9,7 +9,7 @@ jobs:
     uses: rust-build/rust-build.action@v1.4.3
     with:
     # Output target
-      RUSTTARGET: [x86_64-pc-windows-gnu, ubuntu-latest]
+      RUSTTARGET: [x86_64-pc-windows-gnu, x86_64-unknown-linux-musl]
     # List of extra files to include in build
       EXTRA_FILES: # optional
     # Path to directory containing Cargo.toml (defaults to project root)
