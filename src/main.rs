@@ -1,5 +1,7 @@
 use std::{thread, time::{Duration, SystemTime}, io::Result};
 use serialport::{DataBits, StopBits};
+use chrono::{NaiveDateTime, Datelike, Timelike};
+
 
 const TIME_OFFSET: u64 = 60*11 + 44;
 
@@ -26,6 +28,8 @@ fn main() {
             .duration_since(SystemTime::UNIX_EPOCH)
             .unwrap()
             .as_secs() + TIME_OFFSET;
+        
+        let displaytime = NaiveDateTime::from_timestamp_opt(time_now as i64,1_u32).unwrap();
 
         if  time_now-time_startloop <= max_buffer
             && timing_flags[0]!=1 {
@@ -35,8 +39,11 @@ fn main() {
                     Err(_e) => println!("Failed to write!")
                 };
                 timing_flags[0] = 1;
-                println!("Level 1");
-                thread::sleep(Duration::from_secs(routime))
+                println!("Level 1 at {}/{}/{} {}:{}:{}",
+                displaytime.year(), displaytime.month(), displaytime.day(),
+            displaytime.hour(), displaytime.minute(), displaytime.second());
+                thread::sleep(Duration::from_secs(routime)
+            );
             }    
 
         if time_now - time_startloop >= routime 
@@ -48,8 +55,11 @@ fn main() {
                 Err(_e) => println!("Failed to write!")
             };
             timing_flags[1] = 1;
-            println!("Level 2");
-            thread::sleep(Duration::from_secs(routime))
+            println!("Level 2 at {}/{}/{} {}:{}:{}",
+                displaytime.year(), displaytime.month(), displaytime.day(),
+            displaytime.hour(), displaytime.minute(), displaytime.second());
+
+            thread::sleep(Duration::from_secs(routime));
         }
         
         if time_now - time_startloop >= routime*2
@@ -61,13 +71,17 @@ fn main() {
                 Err(_e) => println!("Failed to write!")
             };
             timing_flags[2] = 1;
-            println!("Level 3");
-            thread::sleep(Duration::from_secs(routime))
+            println!("Level 3 at {}/{}/{} {}:{}:{}",
+                displaytime.year(), displaytime.month(), displaytime.day(),
+            displaytime.hour(), displaytime.minute(), displaytime.second());
+            thread::sleep(Duration::from_secs(routime));
         }
 
         if time_now - time_startloop >= routime*3 + 15 &&
         timing_flags !=[1,1,1]{
-            println!("Overtime!");
+            println!("Overtime at {}/{}/{} {}:{}:{}",
+                displaytime.year(), displaytime.month(), displaytime.day(),
+            displaytime.hour(), displaytime.minute(), displaytime.second());
             sendmsg(0).expect("failed!");
             continue
         }
