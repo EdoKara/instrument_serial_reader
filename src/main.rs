@@ -75,6 +75,13 @@ fn main() {
 }
     
 fn sendmsg(input:u8, port: &mut Box<dyn SerialPort>) {   
+    let builder = serialport::new("COM5", 9600) //params to tune for the Arduino port
+        .timeout(Duration::from_millis(3000))
+        .data_bits(DataBits::Eight)
+        .stop_bits(StopBits::One);
+
+    let mut port = builder.open().expect("failed to connect.");  
+  
     let binding: String = input.to_string();
     let writebyte:&[u8] = &binding.as_bytes();
     port
