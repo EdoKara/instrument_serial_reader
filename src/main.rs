@@ -74,6 +74,7 @@ fn main() {
                 displaytime.year(), displaytime.month(), displaytime.day(),
                 displaytime.hour(), displaytime.minute(), displaytime.second());
                 _ = write_flags(routime, &file, 1);
+                thread::sleep(Duration::from_millis(routime*1000))
             }    
 
         if time_now - time_startloop >= routime 
@@ -90,6 +91,7 @@ fn main() {
             displaytime.hour(), displaytime.minute(), displaytime.second());
 
             _ = write_flags(routime, &file, 2);
+            thread::sleep(Duration::from_millis(routime*1000))
         }
         
         if time_now - time_startloop >= routime*2
@@ -105,6 +107,7 @@ fn main() {
                 displaytime.year(), displaytime.month(), displaytime.day(),
             displaytime.hour(), displaytime.minute(), displaytime.second());
             _ = write_flags(routime, &file, 3);
+            thread::sleep(Duration::from_millis(routime*1000))
         }
 
         if time_now - time_startloop >= routime*3 + 15 &&
@@ -159,21 +162,19 @@ fn write_flags(routime:u64,
 
     let mut wtr = csv::Writer::from_path(file)?; //pass it to the writer function
 
-    let mut counter: u64 = 1; 
+    // let mut counter: u64 = 1; 
 
-    while counter < routime { //write 1 entry per second with the flags.
+    // while counter < routime { //write 1 entry per second with the flags.
 
         let now = get_time!();
         let displaynow = get_time_display!(now);
 
         wtr.write_record(vec![displaynow.to_string(), position.to_string()])?;
-        counter += 1;
+    //     counter += 1;
 
-        thread::sleep(Duration::from_millis(1000))
-    }   
+    //     thread::sleep(Duration::from_millis(1000))
+    // }   
     wtr.flush()?;
     Ok(())
 }
-
-
 
