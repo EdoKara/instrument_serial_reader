@@ -50,7 +50,7 @@ fn main() {
 
     while get_time!() - fstarttime < file_write_interval {
     //below func gets system time.
-    let time_startloop:&u64 = &fstarttime;
+    let time_startloop: u64 = get_time!();
     let mut timing_flags: [i32; 3] = [0,0,0]; //flagging var to check when all 3 levels are cycled thru
     let routime:u64 = 5*60; //var to define the run time in 1 place
     let max_buffer:u64 = 10; //maximum error acccepted before a condition is considered skipped
@@ -60,10 +60,7 @@ fn main() {
 
         let time_now:u64 = get_time!();
         
-        let displaytime = 
-        NaiveDateTime::from_timestamp_opt(
-            (time_now - DISPLAYTIME_OFFSET) as i64,0_u32)
-        .unwrap();
+        let displaytime: NaiveDateTime = get_time_display!(time_now);
 
         if  time_now-time_startloop <= max_buffer
             && timing_flags[0]!=1 {
