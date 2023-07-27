@@ -1,7 +1,7 @@
 use std::{thread, 
     time::{Duration, SystemTime}, 
-    io::Result, env, error::Error,
-    ffi::OsString,process, path::{Path, self}};
+    io::Result,
+    path::Path};
 use serialport::{DataBits, StopBits};
 use chrono::{NaiveDateTime, Datelike, Timelike};
 
