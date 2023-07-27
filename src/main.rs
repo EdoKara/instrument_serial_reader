@@ -32,7 +32,7 @@ fn main() {
     let filepath: &Path = Path::new("C:\\Users\\EIS\\Desktop\\valve_flags");
     
     
-    setup(5*60); //starts it on the next 5mins. Accounts for the time it takes for\
+    setup(60*5); //starts it on the next 5mins. Accounts for the time it takes for\
             // the port to reset as well.
     
     loop {
@@ -52,8 +52,8 @@ fn main() {
     //below func gets system time.
     let time_startloop: u64 = get_time!();
     let mut timing_flags: [i32; 3] = [0,0,0]; //flagging var to check when all 3 levels are cycled thru
-    let routime:u64 = 5*60; //var to define the run time in 1 place
-    let max_buffer:u64 = 10; //maximum error acccepted before a condition is considered skipped
+    let routime:u64 = 60*5; //var to define the run time in 1 place
+    let max_buffer:u64 = 25; //maximum error acccepted before a condition is considered skipped
     
     //second while loop for the interior stuff
     while timing_flags != [1,1,1] { //iterate any time the flags aren't all set
@@ -113,7 +113,7 @@ fn main() {
                 displaytime.year(), displaytime.month(), displaytime.day(),
             displaytime.hour(), displaytime.minute(), displaytime.second());
             sendmsg(0).expect("failed!");
-            continue
+            break
         }
         
     }
