@@ -125,7 +125,7 @@ fn setup(routime:u64) {
         .unwrap()
         .as_secs()+TIME_OFFSET;
 
-    if time_now % (routime*3) == 0 {
+    if time_now % (routime) == 0 {
         startflag = 1;}
         else {startflag = 0;}
     }
