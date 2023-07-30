@@ -73,7 +73,7 @@ fn main() {
                 println!("Level 1 at {:02}/{:02}/{:02} {:02}:{:02}:{:02}",
                 displaytime.year(), displaytime.month(), displaytime.day(),
                 displaytime.hour(), displaytime.minute(), displaytime.second());
-                _ = write_flags(routime, &file, 1);
+                _ = write_flags(&file, 1);
                 thread::sleep(Duration::from_millis(routime*1000))
             }    
 
@@ -90,7 +90,7 @@ fn main() {
                 displaytime.year(), displaytime.month(), displaytime.day(),
             displaytime.hour(), displaytime.minute(), displaytime.second());
 
-            _ = write_flags(routime, &file, 2);
+            _ = write_flags(&file, 2);
             thread::sleep(Duration::from_millis(routime*1000))
         }
         
@@ -106,7 +106,7 @@ fn main() {
             println!("Level 3 at {:02}/{:02}/{:02} {:02}:{:02}:{:02}",
                 displaytime.year(), displaytime.month(), displaytime.day(),
             displaytime.hour(), displaytime.minute(), displaytime.second());
-            _ = write_flags(routime, &file, 3);
+            _ = write_flags(&file, 3);
             thread::sleep(Duration::from_millis(routime*1000))
         }
 
@@ -135,7 +135,7 @@ fn sendmsg(input:u8) -> Result<usize> {    //port:
 
     
     let binding: String = input.to_string();
-    let writebyte:&[u8] = &binding.as_bytes();
+    let writebyte:&[u8] = binding.as_bytes();
 
     port
     .write(writebyte)
@@ -157,23 +157,14 @@ fn setup(routime:u64) {
     }
 }
 
-fn write_flags(routime:u64, 
-    file:&Path, position:u8)-> Result<()> {
+fn write_flags(file:&Path, position:u8)-> Result<()> {
 
     let mut wtr = csv::Writer::from_path(file)?; //pass it to the writer function
-
-    // let mut counter: u64 = 1; 
-
-    // while counter < routime { //write 1 entry per second with the flags.
 
         let now = get_time!();
         let displaynow = get_time_display!(now);
 
         wtr.write_record(vec![displaynow.to_string(), position.to_string()])?;
-    //     counter += 1;
-
-    //     thread::sleep(Duration::from_millis(1000))
-    // }   
     wtr.flush()?;
     Ok(())
 }
