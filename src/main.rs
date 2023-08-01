@@ -1,7 +1,6 @@
 use std::{thread, 
     time::{Duration, SystemTime}, 
-    io::Result,
-    path::Path};
+    io::Result};
 use serialport::{DataBits, StopBits};
 use chrono::{NaiveDateTime, Datelike, Timelike};
 
@@ -44,7 +43,7 @@ pub fn main() {
 
     loop { //this is the top-level loop for the program
 
-    let fstarttime:u64 = get_time!(); //grab the time for file purposes
+    
         
 
 //this is the loop the valve switching operates in 
