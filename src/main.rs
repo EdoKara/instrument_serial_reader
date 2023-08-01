@@ -28,19 +28,15 @@ macro_rules! get_time_display { //takes a time object (even get_time!() from abo
 
 macro_rules! timestamp { //must be used with a NativeDateTime object to behave as expected
     ($level:literal, $time_obj:ident) => {
-        println!("Level {} at {:02}/{:02}/{:02} {:02}:{:02}:{:02}", $level,
+        println!("{}, {:02}/{:02}/{:02} {:02}:{:02}:{:02}", $level,
                     $time_obj.year(), $time_obj.month(), $time_obj.day(),
                     $time_obj.hour(), $time_obj.minute(), $time_obj.second())
     };
 }
 
 pub fn main() {
-    println!("Waiting for next 5-minute interval...");
-    let file_write_interval:u64 = (5*60*3)*4; //per-hour recording
-    let filepath: &Path = Path::new("C:\\Users\\EIS\\Desktop\\valve_flags"); //change this to whichever filepath you need to print
-    //the flags to 
-    
-    
+    println!("Level, Datetime");
+        
     setup(60*5); //starts it on the next 5mins. Accounts for the time it takes for\
             // the port to reset as well.
     
@@ -49,17 +45,9 @@ pub fn main() {
     loop { //this is the top-level loop for the program
 
     let fstarttime:u64 = get_time!(); //grab the time for file purposes
-
-    let displaystring = format!("{:02}{:02}{:02}{:02}{:02}", //format YYMMDDHHMM
-        get_time_display!(fstarttime).year(), 
-        get_time_display!(fstarttime).month(),get_time_display!(fstarttime).day(),
-        get_time_display!(fstarttime).hour(),get_time_display!(fstarttime).minute()
-        ); //concatenates the display string to make a unique file name
         
-    let filenamestr: String = format!("rob_noxbox_{}.csv", &displaystring); //concatenating the filenamestr
-    let file = filepath.join(&filenamestr); //final filename
 
-    while get_time!() - fstarttime < file_write_interval { //this is the loop the valve switching operates in 
+//this is the loop the valve switching operates in 
     //below func gets system time.
     let time_startloop: u64 = get_time!();
     let mut timing_flags: [i32; 3] = [0,0,0]; //flagging var to check when all 3 levels are cycled thru
@@ -82,7 +70,6 @@ pub fn main() {
                 };
                 timing_flags[0] = 1; //update the timing flag 
                 timestamp!(1, displaytime); //print out the time that it switched at 
-                _ = write_flags(&file, 1); //write the flag out to csv
                 thread::sleep(Duration::from_millis(routime*1000)) //sleep for 5min worth of milliseconds
             }    
 
@@ -96,8 +83,6 @@ pub fn main() {
             };
             timing_flags[1] = 1;
             timestamp!(2, displaytime);
-
-            _ = write_flags(&file, 2);
             thread::sleep(Duration::from_millis(routime*1000))
         }
         
@@ -111,7 +96,6 @@ pub fn main() {
             };
             timing_flags[2] = 1;
             timestamp!(3, displaytime);
-            _ = write_flags(&file, 3);
             thread::sleep(Duration::from_millis(routime*1000))
         }
 
@@ -125,7 +109,7 @@ pub fn main() {
     }
 }
     }
-}
+
     
 pub fn sendmsg(input:u8) -> Result<usize> {    
    //!
@@ -175,23 +159,23 @@ pub fn setup(routime:u64) {
     }
 }
 
-pub fn write_flags(file:&Path, position:u8)-> Result<()> {
+// pub fn write_flags(file:&Path, position:u8)-> Result<()> {
 
-    //! # Write Flags
-    //! 
-    //! This wraps the functionality of writing flags out to a file so that
-    //! it's more concise to read. Requires a system-valid filepath and a position on the valve
-    //! switcher to write out. 
+//     //! # Write Flags
+//     //! 
+//     //! This wraps the functionality of writing flags out to a file so that
+//     //! it's more concise to read. Requires a system-valid filepath and a position on the valve
+//     //! switcher to write out. 
 
-    let mut wtr = csv::Writer::from_path(file)?; //pass it to the writer function
+//     let mut wtr = csv::Writer::from_path(file)?; //pass it to the writer function
 
-        let now = get_time!(); // grabs a time and turns it to a displaytime for writing
-        let displaynow = get_time_display!(now);
+//         let now = get_time!(); // grabs a time and turns it to a displaytime for writing
+//         let displaynow = get_time_display!(now);
 
-        wtr.write_record(vec![displaynow.to_string(), position.to_string()])?; //try to write out the vector
-    wtr.flush()?; //flush the buffer before closing
-    Ok(()) //if it all worked then return ok
-}
+//         wtr.write_record(vec![displaynow.to_string(), position.to_string()])?; //try to write out the vector
+//     wtr.flush()?; //flush the buffer before closing
+//     Ok(()) //if it all worked then return ok
+// }
 
 // #[cfg(test)]
 
